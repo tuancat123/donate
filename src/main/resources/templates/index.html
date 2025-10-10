@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ - Quỹ từ thiện</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+<header class="navbar">
+    <div class="logo">❤️ Quỹ Từ Thiện</div>
+    <nav>
+        <a href="/">Trang chủ</a>
+        <a href="/campaigns">Chiến dịch</a>
+        <a href="/donate">Quyên góp</a>
+        <a href="/stats">Thống kê</a>
+        <a href="/login">Đăng nhập</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Kết nối yêu thương – Chung tay vì cộng đồng</h1>
+    <p>Mỗi đóng góp của bạn đều có ý nghĩa!</p>
+    <a href="/donate" class="btn">Quyên góp ngay</a>
+</section>
+
+<section class="stats">
+    <div>Tổng quyên góp: <strong th:text="${totalDonation}"></strong> VND</div>
+    <div>Chiến dịch: <strong th:text="${totalCampaigns}"></strong></div>
+    <div>Người tham gia: <strong th:text="${totalUsers}"></strong></div>
+</section>
+
+<section class="campaigns">
+    <h2>Chiến dịch nổi bật</h2>
+    <div class="campaign-list">
+        <div class="campaign-card" th:each="c : ${campaigns}">
+            <h3 th:text="${c.title}"></h3>
+            <p th:text="${c.description}"></p>
+            <progress th:value="${c.raised}" th:max="${c.goal}"></progress>
+            <p>Đã quyên góp: <span th:text="${c.raised}"></span> /
+                <span th:text="${c.goal}"></span> VND</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Quỹ Từ Thiện - Kết nối yêu thương</p>
+</footer>
+</body>
+</html>

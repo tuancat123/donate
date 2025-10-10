@@ -1,0 +1,149 @@
+    /* Reset mặc định */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #fafafa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #ff4d6d;
+      color: white;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .navbar nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .navbar nav a:hover {
+      color: #ffe6ec;
+    }
+
+    /* Hero banner */
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(135deg, #ff85a1, #ff4d6d);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .hero .btn {
+      background: white;
+      color: #ff4d6d;
+      padding: 12px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .hero .btn:hover {
+      background: #ffe6ec;
+    }
+
+    /* Stats section */
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      background: #fff;
+      padding: 30px 20px;
+      margin-top: -40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stats div {
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .stats strong {
+      display: block;
+      font-size: 22px;
+      color: #ff4d6d;
+    }
+
+    /* Campaign cards */
+    .campaigns {
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .campaigns h2 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #ff4d6d;
+    }
+
+    .campaign-list {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .campaign-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      text-align: left;
+      transition: 0.3s;
+    }
+
+    .campaign-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .campaign-card h3 {
+      color: #d4380d;
+      margin-bottom: 10px;
+    }
+
+    .campaign-card progress {
+      width: 100%;
+      height: 16px;
+      margin: 12px 0;
+    }
+
+    /* Footer */
+    footer {
+      background: #333;
+      color: #eee;
+      text-align: center;
+      padding: 20px;
+      margin-top:

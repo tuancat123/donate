@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê quyên góp</title>
+    <link rel="stylesheet" th:href="@{/css/stats.css}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">💖 Quỹ Từ Thiện</div>
+    <nav>
+        <a th:href="@{/}">Trang chủ</a>
+        <a th:href="@{/campaigns}">Chiến dịch</a>
+        <a th:href="@{/donate}">Quyên góp</a>
+        <a th:href="@{/stats}" class="active">Thống kê</a>
+    </nav>
+</header>
+
+<main class="stats-container">
+    <h1>📊 Bảng thống kê quyên góp</h1>
+
+    <div class="overview">
+        <div class="stat-card">
+            <h2>Tổng tiền quyên góp</h2>
+            <p th:text="${totalAmount} + ' VND'">0 VND</p>
+        </div>
+        <div class="stat-card">
+            <h2>Tổng lượt quyên góp</h2>
+            <p th:text="${totalDonations}">0</p>
+        </div>
+        <div class="stat-card">
+            <h2>Số chiến dịch</h2>
+            <p th:text="${activeCampaigns}">0</p>
+        </div>
+    </div>
+
+    <section class="chart-section">
+        <h2>Biểu đồ quyên góp theo chiến dịch</h2>
+        <canvas id="donationChart"></canvas>
+    </section>
+
+    <section class="table-section">
+        <h2>Chi tiết từng chiến dịch</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Tên chiến dịch</th>
+                <th>Số tiền (VND)</th>
+                <th>Lượt quyên góp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="campaign, stat : ${campaignStats}">
+                <td th:text="${campaign.name}">Cứu trợ miền Trung</td>
+                <td th:text="${campaign.amount}">5000000</td>
+                <td th:text="${campaign.donations}">12</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 Quỹ Từ Thiện - Lan tỏa yêu thương</p>
+</footer>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+  const labels = [[${campaignNames}]];
+  const data = [[${campaignAmounts}]];
+
+  new Chart(document.getElementById('donationChart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Số tiền (VND)',
+        data: data,
+        backgroundColor: 'rgba(255,99,132,0.6)',
+        borderColor: 'rgba(255,99,132,1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+/*]]>*/
+</script>
+
+</body>
+</html>

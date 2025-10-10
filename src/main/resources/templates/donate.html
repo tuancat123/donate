@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quyên góp - Quỹ Từ Thiện</title>
+  <link rel="stylesheet" th:href="@{/css/donate.css}">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">💖 Quỹ Từ Thiện</div>
+  <nav>
+    <a th:href="@{/}">Trang chủ</a>
+    <a th:href="@{/campaigns}">Chiến dịch</a>
+    <a th:href="@{/donate}" class="active">Quyên góp</a>
+    <a th:href="@{/stats}">Thống kê</a>
+  </nav>
+</header>
+
+<section class="donate-section">
+  <h1>Quyên góp ngay hôm nay</h1>
+  <p>Hãy cùng chung tay giúp đỡ những hoàn cảnh khó khăn ❤️</p>
+
+  <form th:action="@{/donate}" method="post" class="donate-form">
+    <label>Họ và tên:</label>
+    <input type="text" name="name" placeholder="Nhập họ tên của bạn" required>
+
+    <label>Email:</label>
+    <input type="email" name="email" placeholder="Email liên hệ" required>
+
+    <label>Số tiền quyên góp (VND):</label>
+    <input type="number" name="amount" placeholder="Ví dụ: 500000" min="1000" required>
+
+    <label>Chọn chiến dịch:</label>
+    <select name="campaign" required>
+      <option value="">-- Chọn chiến dịch --</option>
+      <option value="Cứu trợ miền Trung">Cứu trợ miền Trung</option>
+      <option value="Quỹ học bổng 2025">Quỹ học bổng 2025</option>
+      <option value="Bữa cơm nhân ái">Bữa cơm nhân ái</option>
+    </select>
+
+    <label>Lời nhắn (không bắt buộc):</label>
+    <textarea name="message" placeholder="Viết lời nhắn gửi đến người nhận..."></textarea>
+
+    <button type="submit">Gửi quyên góp</button>
+  </form>
+
+  <p th:if="${message}" th:text="${message}" class="success-message"></p>
+</section>
+
+<footer>
+  <p>© 2025 Quỹ Từ Thiện - Lan tỏa yêu thương</p>
+</footer>
+
+</body>
+</html>
