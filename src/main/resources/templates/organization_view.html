@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đối tác đồng hành - Quỹ Từ Thiện</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<!-- 🌸 Navbar -->
+<header class="navbar">
+  <div class="logo">
+    <span class="logo-icon">💖</span>
+    <span class="logo-text">Quỹ Từ Thiện</span>
+  </div>
+  <nav class="nav-links">
+    <a th:href="@{/}">Trang chủ</a>
+    <a th:href="@{/campaigns}">Chiến dịch</a>
+    <a th:href="@{/donate}">Quyên góp</a>
+    <a th:href="@{/organizations}" class="active">Đối tác đồng hành</a>
+    <a th:href="@{/stats}">Thống kê</a>
+  </nav>
+</header>
+
+<!-- 🌈 Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>🤝 Các tổ chức đồng hành</h1>
+    <p>Cùng nhau lan tỏa yêu thương và mang đến hy vọng cho cộng đồng.</p>
+  </div>
+</section>
+
+<!-- 💚 Danh sách tổ chức -->
+<section class="organizations-section">
+  <h2 class="section-title">Đối tác & Tổ chức đồng hành</h2>
+
+  <div class="organization-list">
+    <!-- Một card tổ chức -->
+    <div class="organization-card" th:each="org : ${organizations}">
+      <div class="organization-header">
+        <img th:if="${org.logo != null}"
+             th:src="@{'/images/orgs/' + ${org.logo}}"
+             alt="Logo tổ chức" class="org-logo">
+        <h3 th:text="${org.name}">Tên tổ chức</h3>
+      </div>
+      <p th:text="${org.description}" class="org-desc">Mô tả tổ chức...</p>
+
+      <div class="org-info">
+        <p><strong>Email:</strong> <span th:text="${org.contactEmail}">email@example.com</span></p>
+        <p><strong>Điện thoại:</strong> <span th:text="${org.phone}">0123456789</span></p>
+        <p><strong>Địa chỉ:</strong> <span th:text="${org.address}">TP. Hồ Chí Minh</span></p>
+      </div>
+
+      <div class="org-actions">
+        <a th:href="@{'/organizations/' + ${org.orgId}}" class="btn-hero">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🌷 Footer -->
+<footer>
+  <p>© 2025 Quỹ Từ Thiện - Lan tỏa yêu thương</p>
+</footer>
+
+</body>
+</html>

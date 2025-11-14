@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Trang chủ - Quỹ từ thiện</title>
@@ -7,44 +8,79 @@
 </head>
 
 <body>
+
+<!-- 🌸 Navbar -->
 <header class="navbar">
-    <div class="logo">❤️ Quỹ Từ Thiện</div>
-    <nav>
+    <div class="logo">
+        <span class="logo-icon">❤️</span>
+        <span class="logo-text">Quỹ Từ Thiện</span>
+    </div>
+    <nav class="nav-links">
         <a href="/">Trang chủ</a>
         <a href="/campaigns">Chiến dịch</a>
         <a href="/donate">Quyên góp</a>
+        <a href="/organizations">Đối tác</a>
         <a href="/stats">Thống kê</a>
-        <a href="/login">Đăng nhập</a>
+
+        <!-- Chưa đăng nhập -->
+        <a href="/login" sec:authorize="!isAuthenticated()">Đăng nhập</a>
+        <a href="/register" sec:authorize="!isAuthenticated()">Đăng ký</a>
+
+        <!-- Đã đăng nhập -->
+        <span sec:authorize="isAuthenticated()" class="user-info">
+            Xin chào, <strong sec:authentication="name"></strong>!
+            <a href="/profile" class="profile-link">Hồ sơ</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="logout-btn">Đăng xuất</button>
+            </form>
+        </span>
     </nav>
 </header>
 
+<!-- 🌄 Hero banner -->
 <section class="hero">
-    <h1>Kết nối yêu thương – Chung tay vì cộng đồng</h1>
-    <p>Mỗi đóng góp của bạn đều có ý nghĩa!</p>
-    <a href="/donate" class="btn">Quyên góp ngay</a>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Kết nối yêu thương – Chung tay vì cộng đồng</h1>
+        <p>Mỗi đóng góp của bạn đều có ý nghĩa!</p>
+        <a href="/donate" class="btn-hero">💖 Quyên góp ngay</a>
+    </div>
 </section>
 
+<!-- 💗 Stats -->
 <section class="stats">
-    <div>Tổng quyên góp: <strong th:text="${totalDonation}"></strong> VND</div>
-    <div>Chiến dịch: <strong th:text="${totalCampaigns}"></strong></div>
-    <div>Người tham gia: <strong th:text="${totalUsers}"></strong></div>
+    <div class="stat-card">
+        <h2 th:text="${totalDonation} + ' VND'">0 VND</h2>
+        <p>Tổng quyên góp</p>
+    </div>
+    <div class="stat-card">
+        <h2 th:text="${totalCampaigns}">0</h2>
+        <p>Chiến dịch đang hoạt động</p>
+    </div>
+    <div class="stat-card">
+        <h2 th:text="${totalUsers}">0</h2>
+        <p>Người tham gia</p>
+    </div>
 </section>
 
+<!-- 🧡 Campaigns -->
 <section class="campaigns">
     <h2>Chiến dịch nổi bật</h2>
     <div class="campaign-list">
         <div class="campaign-card" th:each="c : ${campaigns}">
-            <h3 th:text="${c.title}"></h3>
-            <p th:text="${c.description}"></p>
+            <h3 th:text="${c.title}">Tên chiến dịch</h3>
+            <p th:text="${c.description}">Mô tả ngắn về chiến dịch...</p>
             <progress th:value="${c.raised}" th:max="${c.goal}"></progress>
-            <p>Đã quyên góp: <span th:text="${c.raised}"></span> /
-                <span th:text="${c.goal}"></span> VND</p>
+            <p><span th:text="${c.raised}">0</span> /
+                <span th:text="${c.goal}">0</span> VND</p>
         </div>
     </div>
 </section>
 
+<!-- 🌿 Footer -->
 <footer>
-    <p>&copy; 2025 Quỹ Từ Thiện - Kết nối yêu thương</p>
+    <p>&copy; 2025 Quỹ Từ Thiện - Kết nối yêu thương và sẻ chia</p>
 </footer>
+
 </body>
 </html>

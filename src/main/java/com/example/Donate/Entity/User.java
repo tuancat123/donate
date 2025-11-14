@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Integer userId;
     @Column(nullable = false, unique = true, length = 50)
     private String username;
     @Column(nullable = false, length = 255)
@@ -20,15 +20,15 @@ public class User {
     private String fullName;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private Role role;
+    private Role role = Role.USER;
     private Timestamp createdAt;
     public enum Role{
-        ADMIN, ORGANIZATION, DONOR
+        USER, ADMIN, ORG_REP
     }
 
     public User() {}
 
-    public User(Long userId, String username, String password, String email, String fullName, Role role, Timestamp createdAt) {
+    public User(Integer userId, String username, String password, String email, String fullName, Role role, Timestamp createdAt) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -38,8 +38,8 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public Integer getUserId() { return userId; }
+    public void setUserId(Integer userId) { this.userId = userId; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }

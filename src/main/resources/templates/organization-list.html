@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý tổ chức</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<div class="admin-header">
+    <h1>📋 Quản lý Tổ chức</h1>
+    <nav>
+        <a th:href="@{/admin}">Trang quản trị</a>
+        <a th:href="@{/admin/organizations}" class="active">Tổ chức</a>
+        <a th:href="@{/admin/bankaccounts}">Ngân hàng</a>
+        <a th:href="@{/logout}">Đăng xuất</a>
+    </nav>
+</div>
+
+<div class="admin-content">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+        <h2 style="margin:0">Danh sách tổ chức</h2>
+        <a th:href="@{/admin/organizations/add}" class="btn">➕ Thêm tổ chức</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên tổ chức</th>
+            <th>Email</th>
+            <th>Điện thoại</th>
+            <th>Địa chỉ</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="org : ${organizations}">
+            <td th:text="${org.orgId}">1</td>
+            <td th:text="${org.name}">Tên tổ chức</td>
+            <td th:text="${org.contactEmail}">email@org.com</td>
+            <td th:text="${org.phone}">0123456789</td>
+            <td th:text="${org.address}">Địa chỉ</td>
+            <td>
+                <a th:href="@{'/admin/organizations/edit/' + ${org.orgId}}" class="btn" style="background:#28a745">Sửa</a>
+                <a th:href="@{'/admin/organizations/delete/' + ${org.orgId}}"
+                   onclick="return confirm('Xác nhận xóa tổ chức này?')"
+                   class="btn" style="background:#dc3545">Xóa</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(organizations)}">
+            <td colspan="6" style="text-align:center; padding:20px">Chưa có tổ chức nào.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

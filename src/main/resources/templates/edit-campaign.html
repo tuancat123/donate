@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa chiến dịch</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<header class="admin-header">
+    <h1>✏️ Chỉnh sửa chiến dịch</h1>
+    <nav>
+        <a th:href="@{/campaigns}">Danh sách chiến dịch</a>
+        <a th:href="@{/admin}">Trang quản trị</a>
+    </nav>
+</header>
+
+<div class="admin-content">
+    <form th:action="@{/campaigns/update}" th:object="${campaign}" method="post" class="admin-form">
+        <input type="hidden" th:field="*{campaignId}">
+
+        <div class="form-group">
+            <label for="title">Tên chiến dịch:</label>
+            <input type="text" id="title" th:field="*{title}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="organization">Tổ chức:</label>
+            <select id="organization" th:field="*{organization}" required>
+                <option value="">-- Chọn tổ chức --</option>
+                <option th:each="org : ${organizations}"
+                        th:value="${org.orgId}"
+                        th:text="${org.name}"
+                        th:selected="${org.orgId == campaign.organization.orgId}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Mô tả:</label>
+            <textarea id="description" th:field="*{description}" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="goalAmount">Mục tiêu (VNĐ):</label>
+            <input type="number" id="goalAmount" th:field="*{goalAmount}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="endDate">Ngày kết thúc:</label>
+            <input type="date" id="endDate" th:field="*{endDate}" required>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn">💾 Lưu thay đổi</button>
+            <a th:href="@{/admin/campaigns}" class="btn btn-cancel">❌ Hủy</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,51 +1,120 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="vi">
 <head>
   <meta charset="UTF-8">
   <title>Quyên góp - Quỹ Từ Thiện</title>
-  <link rel="stylesheet" th:href="@{/css/donate.css}">
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+  <script>
+    function togglePaymentFields() {
+      const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+      document.getElementById("bank-info").style.display = (method === "BANK") ? "block" : "none";
+      document.getElementById("momo-info").style.display = (method === "MOMO") ? "block" : "none";
+    }
+    window.addEventListener("DOMContentLoaded", togglePaymentFields);
+  </script>
 </head>
+
 <body>
 
+<!-- 🌸 Navbar -->
 <header class="navbar">
-  <div class="logo">💖 Quỹ Từ Thiện</div>
-  <nav>
-    <a th:href="@{/}">Trang chủ</a>
-    <a th:href="@{/campaigns}">Chiến dịch</a>
-    <a th:href="@{/donate}" class="active">Quyên góp</a>
-    <a th:href="@{/stats}">Thống kê</a>
+  <div class="logo">
+    <span class="logo-icon">💖</span>
+    <span class="logo-text">Quỹ Từ Thiện</span>
+  </div>
+  <nav class="nav-links">
+    <a href="/" >Trang chủ</a>
+    <a href="/campaigns">Chiến dịch</a>
+    <a href="/donate" class="active">Quyên góp</a>
+    <a href="/stats">Thống kê</a>
+
+    <!-- Chưa đăng nhập -->
+    <a href="/login" sec:authorize="!isAuthenticated()">Đăng nhập</a>
+    <a href="/register" sec:authorize="!isAuthenticated()">Đăng ký</a>
+
+    <!-- Đã đăng nhập -->
+    <span sec:authorize="isAuthenticated()" class="user-info">
+      Xin chào, <strong sec:authentication="name"></strong>!
+      <a href="/profile" class="profile-link">Hồ sơ</a>
+      <form th:action="@{/logout}" method="post" class="logout-form">
+        <button type="submit" class="logout-btn">Đăng xuất</button>
+      </form>
+    </span>
   </nav>
 </header>
 
+<!-- 💗 Donate Form -->
 <section class="donate-section">
-  <h1>Quyên góp ngay hôm nay</h1>
-  <p>Hãy cùng chung tay giúp đỡ những hoàn cảnh khó khăn ❤️</p>
+  <div class="donate-card">
+    <h2>Quyên góp ngay hôm nay</h2>
+    <p class="subtitle">Hãy cùng chung tay giúp đỡ những hoàn cảnh khó khăn ❤️</p>
 
-  <form th:action="@{/donate}" method="post" class="donate-form">
-    <label>Họ và tên:</label>
-    <input type="text" name="name" placeholder="Nhập họ tên của bạn" required>
+    <form th:action="@{/donate}" method="post" th:object="${donation}" class="donate-form">
 
-    <label>Email:</label>
-    <input type="email" name="email" placeholder="Email liên hệ" required>
+      <!-- 💰 Số tiền -->
+      <label for="amount">Số tiền quyên góp (VND)</label>
+      <input type="number" id="amount" th:field="*{amount}" min="1000" required>
 
-    <label>Số tiền quyên góp (VND):</label>
-    <input type="number" name="amount" placeholder="Ví dụ: 500000" min="1000" required>
+      <!-- 🎯 Chọn chiến dịch -->
+      <label for="campaign">Chọn chiến dịch</label>
+      <select id="campaign" name="campaignId"
+              onchange="window.location = /*[[@{/donate}]]*/ '?campaignId=' + this.value">
+        <option value="">-- Chọn chiến dịch --</option>
+        <option th:each="c : ${campaigns}"
+                th:value="${c.campaignId}"
+                th:text="${c.title}">
+        </option>
+      </select>
 
-    <label>Chọn chiến dịch:</label>
-    <select name="campaign" required>
-      <option value="">-- Chọn chiến dịch --</option>
-      <option value="Cứu trợ miền Trung">Cứu trợ miền Trung</option>
-      <option value="Quỹ học bổng 2025">Quỹ học bổng 2025</option>
-      <option value="Bữa cơm nhân ái">Bữa cơm nhân ái</option>
-    </select>
 
-    <label>Lời nhắn (không bắt buộc):</label>
-    <textarea name="message" placeholder="Viết lời nhắn gửi đến người nhận..."></textarea>
+      <script>
+            function reloadPage() {
+                const id = document.getElementById("campaign").value;
+                if (id) {
+                    window.location.href = "/donate?campaignId=" + id;
+                }
+            }
+      </script>
 
-    <button type="submit">Gửi quyên góp</button>
-  </form>
 
-  <p th:if="${message}" th:text="${message}" class="success-message"></p>
+      <!-- 💳 Phương thức thanh toán -->
+      <label>Phương thức thanh toán</label>
+      <div class="payment-options">
+        <label>
+          <input type="radio" name="paymentMethod" value="BANK" checked onclick="togglePaymentFields()"> Ngân hàng
+        </label>
+        <label>
+          <input type="radio" name="paymentMethod" value="MOMO" onclick="togglePaymentFields()"> Ví MoMo
+        </label>
+      </div>
+
+      <!-- 🏦 Thông tin tài khoản nhận (BANK) -->
+      <div id="bank-info">
+        <p><strong>Tài khoản nhận quyên góp:</strong></p>
+        <ul>
+          <li th:each="b : ${selectedBanks}">
+            <span th:text="${b.bankName}"></span> -
+            <span th:text="${b.accountNumber}"></span> -
+            <span th:text="${b.accountHolder}"></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 📱 Thông tin MoMo -->
+      <div id="momo-info" style="display:none;">
+        <p>Dùng ứng dụng <strong>MoMo</strong> để quét QR:</p>
+        <img th:each="m : ${selectedMomos}"
+             th:src="@{'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + ${m.phoneNumber}}"
+             alt="QR MoMo" class="qr-code">
+      </div>
+
+      <!-- 💌 Lời nhắn -->
+      <label for="message">Lời nhắn (không bắt buộc)</label>
+      <textarea id="message" th:field="*{message}" placeholder="Gửi lời chúc, lời nhắn..."></textarea>
+
+      <button type="submit" class="btn-hero">Gửi quyên góp</button>
+    </form>
+  </div>
 </section>
 
 <footer>

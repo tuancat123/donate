@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f9;
+    margin: 0;
+    text-align: center;
+}
+
+.navbar {
+    background: #ff5c5c;
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.profile-section {
+    margin-top: 50px;
+}
+
+.profile-card {
+    background: white;
+    display: inline-block;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: left;
+}
+
+.profile-card p {
+    font-size: 18px;
+    margin: 10px 0;
+}

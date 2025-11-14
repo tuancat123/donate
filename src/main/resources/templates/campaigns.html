@@ -2,57 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Chiến dịch - Quỹ Từ Thiện</title>
-  <link rel="stylesheet" th:href="@{/css/campaign.css}">
+  <title>Quản lý Chiến dịch quyên góp</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 
-<header class="navbar">
-  <div class="logo">💖 Quỹ Từ Thiện</div>
+<header class="admin-header">
+  <h1>Trang quản trị - Chiến dịch quyên góp</h1>
   <nav>
-    <a th:href="@{/}">Trang chủ</a>
-    <a th:href="@{/campaigns}" class="active">Chiến dịch</a>
-    <a th:href="@{/donate}">Quyên góp</a>
-    <a th:href="@{/stats}">Thống kê</a>
+    <a th:href="@{/admin/dashboard}">🏠 Dashboard</a>
+    <a th:href="@{/admin/campaigns}">🎯 Chiến dịch</a>
+    <a th:href="@{/logout}">🚪 Đăng xuất</a>
   </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-text">
-    <h1>Chiến dịch thiện nguyện</h1>
-    <p>Chung tay giúp đỡ cộng đồng, mỗi đóng góp đều mang ý nghĩa lớn lao ❤️</p>
-  </div>
-</section>
+<div class="admin-content">
+  <h2>Danh sách chiến dịch quyên góp</h2>
+  <a th:href="@{/admin/campaigns/add}" class="btn">+ Thêm chiến dịch</a>
 
-<section class="campaign-list">
-  <h2>Danh sách chiến dịch đang diễn ra</h2>
-  <div class="grid">
-    <div class="card" th:each="c : ${campaigns}">
-      <img th:src="${c.imageUrl}" alt="Ảnh chiến dịch">
-      <div class="content">
-        <h3 th:text="${c.title}"></h3>
-        <p th:text="${c.description}"></p>
-
-        <div class="progress">
-          <progress th:value="${c.raised}" th:max="${c.goal}"></progress>
-          <small>
-            <span th:text="${#numbers.formatInteger(c.raised,0)}"></span> /
-            <span th:text="${#numbers.formatInteger(c.goal,0)}"></span> VND
-          </small>
-        </div>
-
-        <div class="buttons">
-          <a class="btn-detail" href="#">Chi tiết</a>
-          <a class="btn-donate" href="#">Quyên góp</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>© 2025 Quỹ Từ Thiện - Kết nối yêu thương</p>
-</footer>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tên chiến dịch</th>
+      <th>Mô tả</th>
+      <th>Mục tiêu (VND)</th>
+      <th>Đã đạt được (VND)</th>
+      <th>Trạng thái</th>
+      <th>Ngày bắt đầu</th>
+      <th>Ngày kết thúc</th>
+      <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${campaigns}">
+      <td th:text="${c.campaignId}"></td>
+      <td th:text="${c.title}"></td>
+      <td th:text="${c.description}"></td>
+      <td th:text="${#numbers.formatDecimal(c.goalAmount, 0, 'COMMA', 0, 'POINT')}"></td>
+      <td th:text="${#numbers.formatDecimal(c.currentAmount, 0, 'COMMA', 0, 'POINT')}"></td>
+      <td th:text="${c.status}"></td>
+      <td th:text="${c.startDate}"></td>
+      <td th:text="${c.endDate}"></td>
+      <td>
+        <a th:href="@{'/admin/campaigns/edit/' + ${c.campaignId}}" class="btn">✏️ Sửa</a>
+        <a th:href="@{'/admin/campaigns/delete/' + ${c.campaignId}}"
+           onclick="return confirm('Bạn có chắc muốn xóa chiến dịch này không?');"
+           class="btn">🗑️ Xóa</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
 </body>
 </html>

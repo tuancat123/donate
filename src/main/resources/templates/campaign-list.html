@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh sách chiến dịch quyên góp</title>
+  <link rel="stylesheet" th:href="@{/css/campaign-list.css}">
+</head>
+<body>
+<div class="container">
+  <h1>Danh sách chiến dịch quyên góp</h1>
+  <a th:href="@{/campaigns/create}" class="btn btn-create">+ Tạo chiến dịch mới</a>
+
+  <div class="campaign-list">
+    <div th:each="campaign : ${campaigns}" class="campaign-card">
+      <h2 th:text="${campaign.title}">Tên chiến dịch</h2>
+      <p th:text="${campaign.description}">Mô tả chiến dịch</p>
+
+      <div class="progress-container">
+        <div class="progress-bar" th:style="'width:' + (${campaign.collectedAmount} / ${campaign.goalAmount}) * 100 + '%'"></div>
+      </div>
+      <p class="progress-text">
+        <span th:text="${#numbers.formatDecimal(campaign.collectedAmount, 0, 'COMMA', 0, 'POINT')}"></span> /
+        <span th:text="${#numbers.formatDecimal(campaign.goalAmount, 0, 'COMMA', 0, 'POINT')}"></span> VNĐ
+      </p>
+
+      <form th:action="@{'/campaigns/donate/' + ${campaign.id}}" method="post">
+        <input type="number" name="amount" placeholder="Số tiền quyên góp (VNĐ)" min="1000" required>
+        <button type="submit" class="btn btn-donate">Quyên góp</button>
+      </form>
+
+      <p class="end-date">
+        Kết thúc: <span th:text="${#temporals.format(campaign.endDate, 'dd/MM/yyyy')}"></span>
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

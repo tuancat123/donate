@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tạo chiến dịch quyên góp</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<header class="admin-header">
+  <h1>🩵 Tạo chiến dịch quyên góp mới</h1>
+  <nav>
+    <a th:href="@{/campaigns}">Danh sách chiến dịch</a>
+    <a th:href="@{/admin}">Trang quản trị</a>
+  </nav>
+</header>
+
+<div class="admin-content">
+  <form th:action="@{/admin/campaigns/add}" method="post" th:object="${campaign}" class="admin-form">
+    <div class="form-group">
+      <label for="title">Tên chiến dịch:</label>
+      <input type="text" id="title" th:field="*{title}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="organization">Tổ chức:</label>
+      <select id="organization" th:field="*{organization}" required>
+        <option value="">-- Chọn tổ chức --</option>
+        <option th:each="org : ${organizations}"
+                th:value="${org.orgId}"
+                th:text="${org.name}"></option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Mô tả:</label>
+      <textarea id="description" th:field="*{description}" rows="4" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="goalAmount">Mục tiêu (VNĐ):</label>
+      <input type="number" id="goalAmount" th:field="*{goalAmount}" min="1000" required>
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">Ngày kết thúc:</label>
+      <input type="date" id="endDate" th:field="*{endDate}" required>
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="btn">💾 Tạo chiến dịch</button>
+      <a th:href="@{/admin/campaigns}" class="btn btn-cancel">← Quay lại</a>
+    </div>
+  </form>
+</div>
+</body>
+</html>

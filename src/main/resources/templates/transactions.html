@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý giao dịch</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Danh sách giao dịch</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Mã GD</th>
+            <th>Người quyên góp</th>
+            <th>Chiến dịch</th>
+            <th>Số tiền</th>
+            <th>Phương thức</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${transactions}">
+            <td th:text="${t.transactionId}"></td>
+            <td th:text="${t.donation.user.username}"></td>
+            <td th:text="${t.donation.campaign.title}"></td>
+            <td th:text="${#numbers.formatDecimal(t.donation.amount, 0, 'COMMA', 2, 'POINT')} + ' VND'"></td>
+            <td th:text="${t.paymentMethod}"></td>
+            <td th:text="${t.status}"></td>
+            <td th:text="${#temporals.format(t.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin}" class="btn">← Quay lại trang Admin</a>
+</div>
+</body>
+</html>

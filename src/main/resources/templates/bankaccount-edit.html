@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chỉnh sửa tài khoản</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<header class="admin-header">
+  <h1>✏️ Chỉnh sửa tài khoản ngân hàng</h1>
+</header>
+
+<section class="admin-content">
+  <form th:action="@{'/admin/bankaccounts/update/' + ${account.bankId}}" th:object="${account}" method="post">
+
+    <label>Ngân hàng:</label>
+    <input type="text" th:field="*{bankName}" required>
+
+    <label>Số tài khoản:</label>
+    <input type="text" th:field="*{accountNumber}" required>
+
+    <label>Chủ tài khoản:</label>
+    <input type="text" th:field="*{accountHolder}" required>
+
+    <label>Chi nhánh:</label>
+    <input type="text" th:field="*{branch}">
+
+    <label>Tổ chức:</label>
+    <select th:field="*{organization}">
+      <option th:each="org : ${organizations}"
+              th:value="${org.orgId}"
+              th:text="${org.name}"></option>
+    </select>
+
+    <button type="submit">Cập nhật</button>
+    <a th:href="@{/admin/bankaccounts}">Quay lại</a>
+  </form>
+</section>
+
+</body>
+</html>

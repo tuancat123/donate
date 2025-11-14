@@ -1,0 +1,15 @@
+<div class="campaign-card" xmlns:th="http://www.w3.org/1999/xhtml">
+  <img th:src="@{/images/default-campaign.jpg}" alt="Ảnh chiến dịch" class="campaign-img">
+  <div class="campaign-info">
+    <h3 th:text="${campaign.title}">Tên chiến dịch</h3>
+    <p th:text="${campaign.description}">Mô tả ngắn gọn về chiến dịch...</p>
+    <div class="progress-bar">
+      <div class="progress" th:style="'width:' + ${campaign.progress} + '%'"></div>
+    </div>
+    <p class="progress-text">
+      <span th:text="${campaign.currentAmount}">0</span> /
+      <span th:text="${campaign.goalAmount}">1000000</span> VNĐ
+    </p>
+    <a th:href="@{'/campaign/detail/' + ${campaign.id}}" class="btn-donate">Xem chi tiết</a>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 package com.example.Donate.Entity;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
@@ -9,60 +9,105 @@ public class Transactions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionId;
+    private Integer transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "donation_id")
+    @JoinColumn(name = "donation_id", nullable = false)
     private Donations donation;
 
-    @Column(name = "transaction_code", length = 100, unique = true)
+    @Column(length = 100, unique = true)
     private String transactionCode;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", length = 20)
+    @Column(nullable = false, length = 20)
     private PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private Status status;
+    private Status status = Status.SUCCESS;
 
-    private Timestamp createdAt;
+    @ManyToOne
+    @JoinColumn(name = "receiver_bank_id", nullable = true)
+    private BankAccount receiverBank;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_momo_id", nullable = true)
+    private MomoAccount receiverMomo;
+
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
     public enum PaymentMethod {
-        VNPAY, MOMO, BANK_TRANSFER
+        BANK, MOMO, PAYPAL, VNPAY
     }
 
     public enum Status {
-        SUCCESS, FAILED, PENDING
+        PENDING, SUCCESS, FAILED
     }
 
-    public Transactions() {}
+    // Getters and Setters
+    public Integer getTransactionId() {
+        return transactionId;
+    }
 
-    public Transactions(Long transactionId, Donations donation, String transactionCode,
-                       PaymentMethod paymentMethod, Status status, Timestamp createdAt) {
+    public void setTransactionId(Integer transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public Donations getDonation() {
+        return donation;
+    }
+
+    public void setDonation(Donations donation) {
         this.donation = donation;
+    }
+
+    public String getTransactionCode() {
+        return transactionCode;
+    }
+
+    public void setTransactionCode(String transactionCode) {
         this.transactionCode = transactionCode;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public BankAccount getReceiverBank() {
+        return receiverBank;
+    }
+
+    public void setReceiverBank(BankAccount receiverBank) {
+        this.receiverBank = receiverBank;
+    }
+
+    public MomoAccount getReceiverMomo() {
+        return receiverMomo;
+    }
+
+    public void setReceiverMomo(MomoAccount receiverMomo) {
+        this.receiverMomo = receiverMomo;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    public Long getTransactionId() { return transactionId; }
-    public void setTransactionId(Long transactionId) { this.transactionId = transactionId; }
-
-    public Donations getDonation() { return donation; }
-    public void setDonation(Donations donation) { this.donation = donation; }
-
-    public String getTransactionCode() { return transactionCode; }
-    public void setTransactionCode(String transactionCode) { this.transactionCode = transactionCode; }
-
-    public PaymentMethod getPaymentMethod() { return paymentMethod; }
-    public void setPaymentMethod(PaymentMethod paymentMethod) { this.paymentMethod = paymentMethod; }
-
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
-
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }
+

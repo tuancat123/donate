@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">❤️ Quỹ Từ Thiện</div>
+    <nav>
+        <a href="/">Trang chủ</a>
+        <a href="/campaigns">Chiến dịch</a>
+        <a href="/donate">Quyên góp</a>
+        <a href="/stats">Thống kê</a>
+        <a href="/logout">Đăng xuất</a>
+    </nav>
+</header>
+
+<section class="profile-section">
+    <h2>Thông tin cá nhân</h2>
+    <div class="profile-card">
+        <p><strong>Tên đăng nhập:</strong> <span th:text="${user.username}"></span></p>
+        <p><strong>Họ tên:</strong> <span th:text="${user.fullName}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Quyền:</strong> <span th:text="${user.role}"></span></p>
+        <p><strong>Ngày tạo:</strong> <span th:text="${#dates.format(user.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+    </div>
+</section>
+
+</body>
+</html>

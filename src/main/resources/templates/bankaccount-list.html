@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh sách tài khoản ngân hàng</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<header class="admin-header">
+  <h1>🏦 Quản lý tài khoản ngân hàng</h1>
+  <nav>
+    <a th:href="@{/admin}">Trang quản trị</a>
+    <a th:href="@{/admin/bankaccounts/add}" class="btn">+ Thêm tài khoản mới</a>
+  </nav>
+</header>
+
+<section class="admin-content">
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Ngân hàng</th>
+      <th>Số tài khoản</th>
+      <th>Chủ tài khoản</th>
+      <th>Chi nhánh</th>
+      <th>Tổ chức</th>
+      <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="acc : ${accounts}">
+      <td th:text="${acc.bankId}"></td>
+      <td th:text="${acc.bankName}"></td>
+      <td th:text="${acc.accountNumber}"></td>
+      <td th:text="${acc.accountHolder}"></td>
+      <td th:text="${acc.branch}"></td>
+      <td th:text="${acc.organization.name}"></td>
+      <td>
+        <a th:href="@{'/admin/bankaccounts/edit/' + ${acc.bankId}}">Sửa</a> |
+        <a th:href="@{'/admin/bankaccounts/delete/' + ${acc.bankId}}" onclick="return confirm('Xóa tài khoản này?')">Xóa</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

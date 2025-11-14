@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cảm ơn bạn đã quyên góp!</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<div class="thankyou-container">
+  <h1>Cảm ơn bạn!</h1>
+  <p>Quyên góp của bạn đã được ghi nhận thành công.</p>
+
+  <div class="donation-info">
+    <p><strong>Chiến dịch:</strong> <span th:text="${campaign.title}"></span></p>
+    <p><strong>Số tiền:</strong> <span th:text="${#numbers.formatDecimal(donation.amount, 0, 'COMMA', 0, 'POINT')}"></span> VNĐ</p>
+    <p><strong>Thời gian:</strong> <span th:text="${#temporals.format(donation.donatedAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+  </div>
+
+  <a th:href="@{/}" class="btn btn-primary">Quay lại trang chủ</a>
+</div>
+
+</body>
+</html>

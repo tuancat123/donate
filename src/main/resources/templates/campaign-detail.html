@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${campaign.title}">Chiến dịch - Quỹ Từ Thiện</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<!-- 🌸 Navbar -->
+<header class="navbar">
+  <div class="logo">
+    <span class="logo-icon">💖</span>
+    <span class="logo-text">Quỹ Từ Thiện</span>
+  </div>
+  <nav class="nav-links">
+    <a href="/">Trang chủ</a>
+    <a href="/campaigns" class="active">Chiến dịch</a>
+    <a href="/donate">Quyên góp</a>
+    <a href="/stats">Thống kê</a>
+  </nav>
+</header>
+
+<!-- 🌈 Chi tiết chiến dịch -->
+<section class="campaign-detail">
+  <div class="campaign-detail-card">
+
+    <!-- Ảnh -->
+    <div class="campaign-detail-img">
+      <img th:src="@{'/images/campaigns/' + ${campaign.image}}"
+           alt="Ảnh chiến dịch">
+    </div>
+
+    <!-- Nội dung -->
+    <div class="campaign-detail-info">
+      <h1 th:text="${campaign.title}">Tên chiến dịch</h1>
+      <p class="campaign-desc" th:text="${campaign.description}">
+        Mô tả chiến dịch...
+      </p>
+
+      <div class="progress-wrapper">
+        <progress th:value="${campaign.currentAmount}"
+                  th:max="${campaign.goalAmount}"></progress>
+        <p>
+          <span th:text="${campaign.currentAmount}">0</span> /
+          <span th:text="${campaign.goalAmount}">0</span> VND
+        </p>
+      </div>
+
+      <p><strong>Trạng thái:</strong>
+        <span th:text="${campaign.status}">ACTIVE</span>
+      </p>
+
+      <p><strong>Ngày bắt đầu:</strong>
+        <span th:text="${campaign.startDate}">01/01/2025</span>
+      </p>
+      <p><strong>Ngày kết thúc:</strong>
+        <span th:text="${campaign.endDate}">31/12/2025</span>
+      </p>
+
+      <div class="donate-btn-container">
+        <a th:href="@{'/donate'}" class="btn-hero">💝 Quyên góp ngay</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 🌿 Footer -->
+<footer>
+  <p>© 2025 Quỹ Từ Thiện - Lan tỏa yêu thương</p>
+</footer>
+
+</body>
+</html>

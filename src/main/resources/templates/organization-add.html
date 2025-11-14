@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thêm tổ chức</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<div class="admin-header">
+  <h1>➕ Thêm tổ chức</h1>
+  <nav>
+    <a th:href="@{/admin}">Trang quản trị</a>
+    <a th:href="@{/admin/organizations}">Tổ chức</a>
+    <a th:href="@{/logout}">Đăng xuất</a>
+  </nav>
+</div>
+
+<div class="admin-content">
+  <form th:action="@{/admin/organizations/add}" th:object="${organization}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <table>
+      <tr>
+        <th style="width:180px">Tên tổ chức</th>
+        <td><input type="text" th:field="*{name}" required style="width:100%; padding:8px"></td>
+      </tr>
+      <tr>
+        <th>Email liên hệ</th>
+        <td><input type="email" th:field="*{contactEmail}" style="width:100%; padding:8px"></td>
+      </tr>
+      <tr>
+        <th>Điện thoại</th>
+        <td><input type="text" th:field="*{phone}" style="width:100%; padding:8px"></td>
+      </tr>
+      <tr>
+        <th>Địa chỉ</th>
+        <td><input type="text" th:field="*{address}" style="width:100%; padding:8px"></td>
+      </tr>
+      <tr>
+        <th>Mô tả</th>
+        <td><textarea th:field="*{description}" rows="5" style="width:100%; padding:8px"></textarea></td>
+      </tr>
+    </table>
+
+    <div style="margin-top:14px">
+      <button type="submit" class="btn">💾 Lưu</button>
+      <a th:href="@{/admin/organizations}" class="btn" style="background:#6c757d; margin-left:8px">Hủy</a>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

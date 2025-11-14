@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${organization.name} + ' - Đối tác đồng hành'">Chi tiết tổ chức</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<!-- 🌸 Navbar -->
+<header class="navbar">
+    <div class="logo">
+        <span class="logo-icon">💖</span>
+        <span class="logo-text">Quỹ Từ Thiện</span>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/}">Trang chủ</a>
+        <a th:href="@{/campaigns}">Chiến dịch</a>
+        <a th:href="@{/donate}">Quyên góp</a>
+        <a th:href="@{/organizations}" class="active">Đối tác đồng hành</a>
+        <a th:href="@{/stats}">Thống kê</a>
+    </nav>
+</header>
+
+<!-- 🌈 Hero -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 th:text="${organization.name}">Tên tổ chức</h1>
+        <p>Đối tác đồng hành trong các hoạt động thiện nguyện.</p>
+    </div>
+</section>
+
+<!-- 💚 Thông tin chi tiết tổ chức -->
+<section class="organization-detail">
+    <div class="org-header">
+        <img th:if="${organization.logo != null}"
+             th:src="@{'/images/orgs/' + ${organization.logo}}"
+             alt="Logo tổ chức" class="org-logo-large">
+
+        <div class="org-info">
+            <h2 th:text="${organization.name}">Tên tổ chức</h2>
+            <p th:text="${organization.description}">Mô tả tổ chức...</p>
+
+            <ul>
+                <li><strong>📧 Email:</strong> <span th:text="${organization.contactEmail}">email@example.com</span></li>
+                <li><strong>📞 Điện thoại:</strong> <span th:text="${organization.phone}">0123456789</span></li>
+                <li><strong>📍 Địa chỉ:</strong> <span th:text="${organization.address}">TP. Hồ Chí Minh</span></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- 🎯 Các chiến dịch của tổ chức -->
+<section class="campaigns">
+    <h2>Các chiến dịch do tổ chức này đồng hành</h2>
+
+    <div class="campaign-list">
+        <div class="campaign-card" th:each="c : ${campaigns}">
+            <img th:src="@{'/images/campaigns/' + ${c.image}}" alt="Ảnh chiến dịch" class="campaign-img">
+            <h3 th:text="${c.title}">Tên chiến dịch</h3>
+            <p th:text="${c.description}">Mô tả ngắn...</p>
+
+            <progress th:value="${c.currentAmount}" th:max="${c.goalAmount}"></progress>
+            <p><span th:text="${c.currentAmount}">0</span> / <span th:text="${c.goalAmount}">0</span> VND</p>
+
+            <a th:href="@{'/campaigns/' + ${c.id}}" class="btn-hero">Xem chi tiết</a>
+        </div>
+
+        <!-- Nếu tổ chức chưa có chiến dịch -->
+        <p th:if="${#lists.isEmpty(campaigns)}" style="text-align:center; margin-top: 20px;">
+            Tổ chức này hiện chưa có chiến dịch nào.
+        </p>
+    </div>
+</section>
+
+<!-- 🌷 Footer -->
+<footer>
+    <p>© 2025 Quỹ Từ Thiện - Lan tỏa yêu thương</p>
+</footer>
+
+</body>
+</html>

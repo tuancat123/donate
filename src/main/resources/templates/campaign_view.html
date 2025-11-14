@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chiến dịch - Quỹ Từ Thiện</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+
+<!-- 🌸 Navbar -->
+<header class="navbar">
+    <div class="logo">
+        <span class="logo-icon">💖</span>
+        <span class="logo-text">Quỹ Từ Thiện</span>
+    </div>
+    <nav class="nav-links">
+        <a href="/">Trang chủ</a>
+        <a href="/campaigns" class="active">Chiến dịch</a>
+        <a href="/donate">Quyên góp</a>
+        <a href="/stats">Thống kê</a>
+    </nav>
+</header>
+
+<!-- 🌈 Danh sách chiến dịch -->
+<section class="campaigns">
+    <h2>Các chiến dịch đang diễn ra</h2>
+
+    <div class="campaign-list">
+        <div class="campaign-card" th:each="c : ${campaigns}">
+            <img th:src="@{'/images/campaigns/' + ${c.image}}" alt="Ảnh chiến dịch" class="campaign-img">
+
+            <h3 th:text="${c.title}">Tên chiến dịch</h3>
+            <p th:text="${c.description}">Mô tả ngắn...</p>
+
+            <progress th:value="${c.currentAmount}" th:max="${c.goalAmount}"></progress>
+            <p>
+                <span th:text="${#numbers.formatInteger(c.currentAmount, 0)}">0</span> /
+                <span th:text="${#numbers.formatInteger(c.goalAmount, 0)}">0</span> VND
+            </p>
+
+            <a th:href="@{'/campaigns/' + ${c.campaignId}}" class="btn-hero">Xem chi tiết</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2025 Quỹ Từ Thiện - Lan tỏa yêu thương</p>
+</footer>
+
+</body>
+</html>
