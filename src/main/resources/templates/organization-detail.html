@@ -63,7 +63,7 @@
             <progress th:value="${c.currentAmount}" th:max="${c.goalAmount}"></progress>
             <p><span th:text="${c.currentAmount}">0</span> / <span th:text="${c.goalAmount}">0</span> VND</p>
 
-            <a th:href="@{'/campaigns/' + ${c.id}}" class="btn-hero">Xem chi tiết</a>
+            <a th:href="@{'/campaigns/' + ${c.campaignId}}" class="btn-hero">Xem chi tiết</a>
         </div>
 
         <!-- Nếu tổ chức chưa có chiến dịch -->

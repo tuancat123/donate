@@ -1,45 +1,53 @@
 package com.example.Donate.Controller;
 
+import com.example.Donate.Entity.Donation_Campaigns;
+import com.example.Donate.Repository.DonationCampaignRepository;
+import com.example.Donate.Repository.DonationRepository;
+import com.example.Donate.Service.DonationService;
+import com.example.Donate.Service.DonationCampaignService;
+import com.example.Donate.Service.StatsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Controller
+@RequestMapping("/admin/stats")
 public class StatsController {
-    @GetMapping("/stats")
-    public String showStatsPage(Model model) {
-        // Dữ liệu mẫu (sau này bạn thay bằng dữ liệu thật từ DB)
-        model.addAttribute("totalAmount", 25000000);
-        model.addAttribute("totalDonations", 134);
-        model.addAttribute("activeCampaigns", 5);
 
-        model.addAttribute("campaignNames", List.of("Miền Trung", "Học bổng 2025", "Bữa cơm nhân ái"));
-        model.addAttribute("campaignAmounts", List.of(10000000, 8000000, 7000000));
+    @Autowired
+    private StatsService statsService;
 
-        // Bảng thống kê chi tiết
-        model.addAttribute("campaignStats", List.of(
-                new CampaignStat("Miền Trung", 10000000, 45),
-                new CampaignStat("Học bổng 2025", 8000000, 55),
-                new CampaignStat("Bữa cơm nhân ái", 7000000, 34)
-        ));
+    @Autowired
+    private DonationRepository donationRepository;
 
-        return "stats"; // Tên file HTML trong templates/
-    }
+    @Autowired
+    private DonationCampaignRepository campaignRepository;
 
-    // Lớp phụ cho dữ liệu hiển thị bảng
-    public static class CampaignStat {
-        public String name;
-        public int amount;
-        public int donations;
+    @GetMapping
+    public String stats(Model model) {
 
-        public CampaignStat(String name, int amount, int donations) {
-            this.name = name;
-            this.amount = amount;
-            this.donations = donations;
-        }
+        // 1️⃣ Các số tổng quát
+        model.addAttribute("totalAmount", statsService.getTotalDonationAmount());
+        model.addAttribute("totalDonations", statsService.countDonations());
+        model.addAttribute("activeCampaigns", statsService.countActiveCampaigns());
 
-        public String getName() { return name; }
-        public int getAmount() { return amount; }
-        public int getDonations() { return donations; }
+        // 2️⃣ Danh sách thống kê từng chiến dịch
+        List<Map<String, Object>> campaignStats = statsService.getCampaignStats();
+        model.addAttribute("campaignStats", campaignStats);
+
+        // 3️⃣ Dữ liệu cho ChartJS
+        model.addAttribute("campaignNames", campaignStats.stream()
+                .map(c -> c.get("title"))
+                .collect(Collectors.toList()));
+        model.addAttribute("campaignAmounts", campaignStats.stream()
+                .map(c -> ((Number)c.get("currentAmount")).longValue())
+                .collect(Collectors.toList()));
+
+        return "stats"; // templates/admin/stats.html
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,9 +22,23 @@ public class UserService {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Username already exists!");
         }
+
+        // Xác thực email
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already exists!");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(User.Role.USER);
+
+        // mặc định chưa xác thực
+        user.setEnabled(false);
+
         return userRepository.save(user);
+    }
+
+    public User findByVerificationCode(String code) {
+        return userRepository.findByVerificationCode(code);
     }
 
     public User findByUsername(String username) {
@@ -42,5 +57,56 @@ public class UserService {
 
     public User findByUsernameAndPassword(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
+    }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    public void deleteUser(Integer id) {
+        userRepository.deleteById(id);
+    }
+    public void enableUser(Integer id) {
+        User user = getUserById(id);
+        if (user != null) {
+            user.setEnabled(true);
+            userRepository.save(user);
+        }
+    }
+
+    public void disableUser(Integer id) {
+        User user = getUserById(id);
+        if (user != null) {
+            user.setEnabled(false);
+            userRepository.save(user);
+        }
+    }
+
+
+
+    // Cập nhật thông tin cơ bản
+    public void updateProfile(User user, String fullName, String email) {
+        user.setFullName(fullName);
+        user.setEmail(email);
+        userRepository.save(user);
+    }
+
+    // Đổi mật khẩu
+    public boolean changePassword(User user, String oldPassword, String newPassword) {
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return false; // sai mật khẩu cũ
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
     }
 }

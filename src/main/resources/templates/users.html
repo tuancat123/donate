@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý người dùng</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="admin-header">
+  <nav>
+    <a th:href="@{/admin}">Dashboard</a>
+    <a th:href="@{/admin/bankaccounts}">Quản lý tài khoản ngân hàng</a>
+    <a th:href="@{/admin/campaigns}">Quản lý chiến dịch</a>
+    <a th:href="@{/admin/users}">Quản lý người dùng</a>
+    <a th:href="@{/admin/organizations}">Quản lý các tổ chức</a>
+    <a th:href="@{/admin/transactions}">Quản lý giao dịch</a>
+  </nav>
+</div>
+
+<div class="admin-content container">
+  <h1>Danh sách người dùng</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Full Name</th>
+      <th>Role</th>
+      <th>Trạng thái</th>
+      <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.userId}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.email}"></td>
+      <td th:text="${user.fullName}"></td>
+      <td th:text="${user.role}"></td>
+      <td th:text="${user.enabled ? 'Đã xác thực' : 'Chưa xác thực'}"></td>
+      <td class="button-group">
+        <a th:href="@{'/admin/users/toggle/' + ${user.userId}}" class="btn"
+           th:text="${user.enabled ? 'Vô hiệu' : 'Kích hoạt'}"></a>
+        <a th:href="@{'/admin/users/delete/' + ${user.userId}}" class="btn btn-cancel"
+           onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <a th:href="@{/admin/users/add}" class="btn">Thêm người dùng</a>
+</div>
+</body>
+</html>

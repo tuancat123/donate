@@ -57,14 +57,19 @@
 
       <!-- 🎯 Chọn chiến dịch -->
       <label for="campaign">Chọn chiến dịch</label>
-      <select id="campaign" name="campaignId"
-              onchange="window.location = /*[[@{/donate}]]*/ '?campaignId=' + this.value">
+
+      <select id="campaign"
+              name="campaignId"
+              onchange="window.location.href='/donate?campaignId=' + this.value">
         <option value="">-- Chọn chiến dịch --</option>
+
         <option th:each="c : ${campaigns}"
                 th:value="${c.campaignId}"
+                th:selected="${selectedCampaignId == c.campaignId}"
                 th:text="${c.title}">
         </option>
       </select>
+
 
 
       <script>
@@ -89,10 +94,10 @@
       </div>
 
       <!-- 🏦 Thông tin tài khoản nhận (BANK) -->
-      <div id="bank-info">
+      <div id="bank-info" th:if="${bankAccounts != null}">
         <p><strong>Tài khoản nhận quyên góp:</strong></p>
         <ul>
-          <li th:each="b : ${selectedBanks}">
+          <li th:each="b : ${bankAccounts}">
             <span th:text="${b.bankName}"></span> -
             <span th:text="${b.accountNumber}"></span> -
             <span th:text="${b.accountHolder}"></span>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa người dùng</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+<h1>Sửa thông tin người dùng</h1>
+
+<form th:action="@{'/admin/users/update/' + ${user.id}}" th:object="${user}" method="post" class="form">
+
+    <label>Họ và tên:</label>
+    <input type="text" th:field="*{fullName}" required>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" required>
+
+    <label>Mật khẩu (nếu muốn đổi):</label>
+    <input type="password" th:field="*{password}" placeholder="Để trống nếu không đổi">
+
+    <label>Vai trò:</label>
+    <select th:field="*{role}">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+    </select>
+
+    <label>Kích hoạt:</label>
+    <select th:field="*{enabled}">
+        <option value="true">Đang hoạt động</option>
+        <option value="false">Tắt</option>
+    </select>
+
+    <button type="submit" class="btn btn-edit">Cập nhật</button>
+    <a href="users" class="btn btn-secondary">Hủy</a>
+
+</form>
+
+</body>
+</html>

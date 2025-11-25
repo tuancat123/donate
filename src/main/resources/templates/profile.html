@@ -1,33 +1,82 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Thông tin cá nhân</title>
-    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <title>Hồ Sơ Cá Nhân</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
+
 <body>
 
-<header class="navbar">
-    <div class="logo">❤️ Quỹ Từ Thiện</div>
-    <nav>
+<!-- 🌸 NAVBAR -->
+<div class="navbar">
+    <div class="logo">
+        <span class="logo-icon">❤️</span> Charity
+    </div>
+
+    <div class="nav-links">
         <a href="/">Trang chủ</a>
         <a href="/campaigns">Chiến dịch</a>
-        <a href="/donate">Quyên góp</a>
-        <a href="/stats">Thống kê</a>
-        <a href="/logout">Đăng xuất</a>
-    </nav>
-</header>
 
-<section class="profile-section">
-    <h2>Thông tin cá nhân</h2>
-    <div class="profile-card">
-        <p><strong>Tên đăng nhập:</strong> <span th:text="${user.username}"></span></p>
-        <p><strong>Họ tên:</strong> <span th:text="${user.fullName}"></span></p>
-        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-        <p><strong>Quyền:</strong> <span th:text="${user.role}"></span></p>
-        <p><strong>Ngày tạo:</strong> <span th:text="${#dates.format(user.createdAt, 'dd/MM/yyyy HH:mm')}"></span></p>
+        <span class="user-info">
+            Xin chào, <b th:text="${user.fullName}"></b> |
+            <a href="/profile" class="profile-link">Hồ sơ</a>
+        </span>
+
+        <form action="/logout" method="post" class="logout-form">
+            <button type="submit" class="logout-btn">Đăng xuất</button>
+        </form>
     </div>
-</section>
+</div>
+
+
+<!-- 🌸 PROFILE SECTION -->
+<div class="donate-section" style="padding-top: 40px; padding-bottom: 40px;">
+    <div class="donate-card" style="max-width: 650px;">
+
+        <h2>Hồ Sơ Cá Nhân</h2>
+        <p class="subtitle">Cập nhật thông tin cá nhân & đổi mật khẩu</p>
+
+        <!-- Thông báo -->
+        <div th:if="${success}" class="alert success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+        <!-- FORM CẬP NHẬT THÔNG TIN -->
+        <form action="/profile/update" method="post" class="donate-form">
+
+            <label>Họ và tên</label>
+            <input type="text" name="fullName" th:value="${user.fullName}" required>
+
+            <label>Email</label>
+            <input type="email" name="email" th:value="${user.email}" required>
+
+            <button type="submit">Lưu thay đổi</button>
+        </form>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+
+        <!-- FORM ĐỔI MẬT KHẨU -->
+        <form action="/profile/change-password" method="post" class="donate-form">
+
+            <label>Mật khẩu cũ</label>
+            <input type="password" name="oldPassword" required>
+
+            <label>Mật khẩu mới</label>
+            <input type="password" name="newPassword" required>
+
+            <label>Nhập lại mật khẩu mới</label>
+            <input type="password" name="confirmPassword" required>
+
+            <button type="submit">Đổi mật khẩu</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- 🌿 FOOTER -->
+<footer>
+    © 2024 Charity Website – All rights reserved.
+</footer>
 
 </body>
 </html>

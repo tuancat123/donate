@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${user.userId == null ? 'Thêm người dùng' : 'Chỉnh sửa người dùng'}"></title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="admin-header">
+  <nav>
+    <a th:href="@{/admin}">Dashboard</a>
+    <a th:href="@{/admin/bankaccounts}">Quản lý tài khoản ngân hàng</a>
+    <a th:href="@{/admin/campaigns}">Quản lý chiến dịch</a>
+    <a th:href="@{/admin/users}">Quản lý người dùng</a>
+    <a th:href="@{/admin/organizations}">Quản lý tổ chức</a>
+    <a th:href="@{/admin/transactions}">Quản lý giao dịch</a>
+  </nav>
+</div>
+
+<div class="admin-content container">
+
+  <h1 th:text="${user.userId == null ? 'Thêm người dùng' : 'Chỉnh sửa người dùng'}"></h1>
+
+  <form th:action="@{/admin/users/save}" th:object="${user}" method="post" class="admin-form">
+
+    <input type="hidden" th:field="*{userId}">
+
+    <!-- USERNAME -->
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" th:field="*{username}" placeholder="Nhập username" required>
+    </div>
+
+    <!-- EMAIL -->
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" th:field="*{email}" placeholder="Nhập email" required>
+    </div>
+
+    <!-- FULL NAME -->
+    <div class="form-group">
+      <label>Họ và tên</label>
+      <input type="text" th:field="*{fullName}" placeholder="Nhập họ và tên">
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="form-group">
+      <label>Mật khẩu</label>
+      <input type="password" th:field="*{password}" placeholder="Nhập mật khẩu"
+             th:attr="required=${user.userId == null}">
+      <small style="color: #777;">
+        <i th:if="${user.userId != null}">Để trống nếu không muốn đổi mật khẩu</i>
+      </small>
+    </div>
+
+    <!-- ROLE -->
+    <div class="form-group">
+      <label>Vai trò</label>
+      <select th:field="*{role}">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+        <option value="ORG_REP">ORG_REP (Đại diện tổ chức)</option>
+      </select>
+    </div>
+
+    <!-- ENABLED -->
+    <div class="form-group">
+      <label>Trạng thái kích hoạt</label><br>
+      <input type="checkbox" th:field="*{enabled}"> Đã xác thực tài khoản
+    </div>
+
+    <!-- BUTTON -->
+    <div class="button-group">
+      <button type="submit" class="btn">Lưu lại</button>
+      <a th:href="@{/admin/users}" class="btn btn-cancel">Hủy</a>
+    </div>
+
+  </form>
+
+</div>
+
+</body>
+</html>

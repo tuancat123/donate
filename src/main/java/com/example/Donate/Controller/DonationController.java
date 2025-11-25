@@ -38,6 +38,9 @@ public class DonationController {
     @Autowired
     private BankAccountService bankAccountService;
 
+    //@Autowired
+    //private EmailService emailService;
+
     // GET: Hiển thị form quyên góp
     @GetMapping("/donate")
     public String showDonateForm(
@@ -45,33 +48,59 @@ public class DonationController {
             Model model) {
 
         List<Donation_Campaigns> campaigns = campaignService.getALlCampaigns();
+//        model.addAttribute("campaigns", campaigns);
+//
+//        Donations donation = new Donations();
+//        model.addAttribute("donation", donation);
+//
+//        // Trường hợp chưa chọn chiến dịch → không có bank
+//        if (campaignId == null) {
+//            model.addAttribute("selectedBanks", List.of());
+//            model.addAttribute("selectedMomos", List.of());
+//            return "donate";
+//        }
+//
+//        // Khi người dùng chọn chiến dịch
+//        Donation_Campaigns campaign = campaignService.getCampaignById(campaignId);
+//
+//        if (campaign != null && campaign.getOrganization() != null) {
+//            Organizations org = campaign.getOrganization();
+//
+//            List<BankAccount> bankList = bankAccountService.getAccountsByOrganization(org);
+////            List<MomoAccount> momoList = momoService.getByOrganization(org);
+//
+//            model.addAttribute("selectedBanks", bankList);
+////            model.addAttribute("selectedMomos", momoList);
+//        } else {
+//            model.addAttribute("selectedBanks", List.of());
+//            model.addAttribute("selectedMomos", List.of());
+//        }
+//
+//        return "donate";
         model.addAttribute("campaigns", campaigns);
 
-        Donations donation = new Donations();
-        model.addAttribute("donation", donation);
+        // Form Donation
+        model.addAttribute("donation", new Donations());
 
-        // Trường hợp chưa chọn chiến dịch → không có bank
+        // Nếu chưa chọn chiến dịch → return trang
         if (campaignId == null) {
-            model.addAttribute("selectedBanks", List.of());
-            model.addAttribute("selectedMomos", List.of());
+            model.addAttribute("bankAccounts", null);
             return "donate";
         }
 
-        // Khi người dùng chọn chiến dịch
+        // Lấy campaign đã chọn
         Donation_Campaigns campaign = campaignService.getCampaignById(campaignId);
-
-        if (campaign != null && campaign.getOrganization() != null) {
-            Organizations org = campaign.getOrganization();
-
-            List<BankAccount> bankList = bankAccountService.getAccountsByOrganization(org);
-//            List<MomoAccount> momoList = momoService.getByOrganization(org);
-
-            model.addAttribute("selectedBanks", bankList);
-//            model.addAttribute("selectedMomos", momoList);
-        } else {
-            model.addAttribute("selectedBanks", List.of());
-            model.addAttribute("selectedMomos", List.of());
+        if (campaign == null || campaign.getOrganization() == null) {
+            model.addAttribute("bankAccounts", null);
+            return "donate";
         }
+
+        // Lấy danh sách bank account của tổ chức thuộc chiến dịch đó
+        List<BankAccount> accounts =
+                bankAccountService.getAccountsByOrganization(campaign.getOrganization());
+
+        model.addAttribute("bankAccounts", accounts);
+        model.addAttribute("selectedCampaignId", campaignId);
 
         return "donate";
     }
@@ -95,9 +124,21 @@ public class DonationController {
         if (donation.getAmount() == null) {
             donation.setAmount(BigDecimal.ZERO);
         }
+        // Lấy campaign từ ID form
+        if (donation.getCampaignId() != null) {
+            Donation_Campaigns campaign = campaignService.getCampaignById(donation.getCampaignId());
+            donation.setCampaign(campaign);
+        }
 
         // Lưu Donation
         donationsService.saveDonation(donation);
+
+        // Gửi mail xác nhận
+//        emailService.sendDonationEmail(
+//                donation.getEmail(),
+//                donation.getCampaign().getTitle(),
+//                donation.getAmount()
+//        );
 
         // Tạo Transaction
         Transactions transaction = new Transactions();

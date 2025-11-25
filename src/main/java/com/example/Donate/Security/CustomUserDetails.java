@@ -50,7 +50,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled(); // ❗ Spring Security sẽ kiểm tra cái này
     }
 
     public User getUser() {

@@ -20,6 +20,10 @@ public class Donations {
     @JoinColumn(name = "campaign_id", nullable = false)
     private Donation_Campaigns campaign;
 
+    //ko lưu database
+    @Transient
+    private Integer campaignId;
+
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal amount;
 
@@ -76,6 +80,14 @@ public class Donations {
 
     public void setDonatedAt(LocalDateTime donatedAt) {
         this.donatedAt = donatedAt;
+    }
+
+    public Integer getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(Integer campaignId) {
+        this.campaignId = campaignId;
     }
 }
 

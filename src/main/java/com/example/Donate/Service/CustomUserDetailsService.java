@@ -16,11 +16,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy user: " + username));
-        //return new CustomUserDetails(user);
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword()) // phải là password mã hóa
-                .roles(user.getRole().name())
-                .build();
+        return new CustomUserDetails(user);
+//        return org.springframework.security.core.userdetails.User.builder()
+//                .username(user.getUsername())
+//                .password(user.getPassword()) // phải là password mã hóa
+//                .roles(user.getRole().name())
+//                .build();
     }
 }

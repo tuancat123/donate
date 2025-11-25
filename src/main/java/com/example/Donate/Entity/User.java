@@ -22,6 +22,12 @@ public class User {
     @Column(length = 20)
     private Role role = Role.USER;
     private Timestamp createdAt;
+
+    @Column(name="enabled")
+    private boolean enabled = false; // mặc định chưa xác thực
+
+    @Column(name="verification_code", length = 64)
+    private String verificationCode;
     public enum Role{
         USER, ADMIN, ORG_REP
     }
@@ -58,4 +64,10 @@ public class User {
 
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+
+    public boolean isEnabled() { return enabled; }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+
+    public String getVerificationCode() { return verificationCode; }
+    public void setVerificationCode(String verificationCode) { this.verificationCode = verificationCode; }
 }

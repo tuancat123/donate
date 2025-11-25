@@ -15,7 +15,10 @@
         <a th:href="@{/admin/users}">Quản lý người dùng</a>
         <a th:href="@{/admin/organizations}">Quản lý các tổ chức</a>
         <a th:href="@{/admin/transactions}">Quản lý giao dịch</a>
-        <a th:href="@{/logout}">Đăng xuất</a>
+        <a th:href="@{/admin/stats}">Thống kê</a>
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+            <button type="submit" class="logout-btn">Đăng xuất</button>
+        </form>
     </nav>
 </header>
 

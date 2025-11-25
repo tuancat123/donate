@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DonationService {
@@ -62,4 +61,33 @@ public class DonationService {
             donationsRepository.delete(donation);
         }
     }
+
+
+
+                            //Thống kê//
+    public long getTotalDonationAmount() {
+        Long sum = donationsRepository.sumAllDonations();
+        return sum != null ? sum : 0;
+    }
+
+    public long countDonations() {
+        return donationsRepository.count();
+    }
+
+    public List<Map<String, Object>> getStatisticsByCampaign() {
+
+        List<Object[]> rows = donationsRepository.getStatsByCampaign();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Object[] row : rows) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", row[0]);
+            map.put("amount", row[1]);
+            map.put("donations", row[2]);
+            result.add(map);
+        }
+
+        return result;
+    }
+
 }
