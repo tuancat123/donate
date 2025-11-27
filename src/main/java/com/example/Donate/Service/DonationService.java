@@ -65,9 +65,13 @@ public class DonationService {
 
 
                             //Thống kê//
-    public long getTotalDonationAmount() {
-        Long sum = donationsRepository.sumAllDonations();
-        return sum != null ? sum : 0;
+//    public long getTotalDonationAmount() {
+//        Long sum = donationsRepository.sumAllDonations();
+//        return sum != null ? sum : 0;
+//    }
+    public BigDecimal getTotalDonationAmount() {
+        BigDecimal sum = donationsRepository.sumAllDonations();
+        return sum != null ? sum : BigDecimal.ZERO;
     }
 
     public long countDonations() {
@@ -90,4 +94,15 @@ public class DonationService {
         return result;
     }
 
+
+    public BigDecimal getTotalDonationAmount2() {
+        BigDecimal sum = donationsRepository.sumAllDonations();
+        return sum != null ? sum : BigDecimal.ZERO;
+    }
+
+
+
+    public List<Donations> getDonationHistoryByUser(Integer userId) {
+        return donationsRepository.findByUserIdOrderByDateDesc(userId);
+    }
 }

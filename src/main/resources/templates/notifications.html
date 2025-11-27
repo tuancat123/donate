@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Thông Báo</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+
+<!-- 🌸 NAVBAR -->
+<div class="navbar">
+  <div class="logo">
+    <span class="logo-icon">❤️</span> Charity
+  </div>
+
+  <div class="nav-links">
+    <a href="/">Trang chủ</a>
+    <a href="/campaigns">Chiến dịch</a>
+
+    <span class="user-info">
+            Xin chào, <b th:text="${user.fullName}"></b> |
+            <a href="/profile" class="profile-link">Hồ sơ</a> |
+            <a href="/notifications" class="profile-link">Thông báo</a>
+        </span>
+
+    <form action="/logout" method="post" class="logout-form">
+      <button type="submit" class="logout-btn">Đăng xuất</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- 🔔 NOTIFICATION LIST -->
+<div class="donate-section" style="padding-top: 40px; padding-bottom: 40px;">
+  <div class="donate-card" style="max-width: 700px;">
+
+    <h2>Thông Báo</h2>
+    <p class="subtitle">Các thông báo chiến dịch mới dành cho bạn</p>
+
+    <div th:if="${#lists.isEmpty(notifications)}" style="text-align:center; color:#777; padding:20px;">
+      Không có thông báo mới nào.
+    </div>
+
+    <div th:each="notif : ${notifications}" class="notif-item"
+         style="padding:15px; border-radius:10px; border:1px solid #eee; margin-bottom:15px; background:#fffdfd;">
+
+      <p style="font-size:15px; margin-bottom:8px;">
+        🔔 <span th:text="${notif.message}"></span>
+      </p>
+
+      <small style="color:#888;"
+             th:text="${#dates.format(notif.createdAt, 'dd/MM/yyyy HH:mm')}">
+      </small>
+
+      <form th:action="@{/notifications/seen/{id}(id=${notif.id})}" method="post" style="margin-top:10px;">
+        <button type="submit"
+                style="padding:6px 10px; background:#ff4d6d; color:white; border:none; border-radius:6px; cursor:pointer;">
+          Đánh dấu đã đọc
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- 🌿 FOOTER -->
+<footer>
+  © 2024 Charity Website – All rights reserved.
+</footer>
+
+</body>
+</html>

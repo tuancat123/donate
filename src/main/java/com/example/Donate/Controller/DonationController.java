@@ -47,7 +47,7 @@ public class DonationController {
             @RequestParam(value = "campaignId", required = false) Integer campaignId,
             Model model) {
 
-        List<Donation_Campaigns> campaigns = campaignService.getALlCampaigns();
+        List<Donation_Campaigns> campaigns = campaignService.getAllCampaigns();
 //        model.addAttribute("campaigns", campaigns);
 //
 //        Donations donation = new Donations();
@@ -160,6 +160,24 @@ public class DonationController {
     public String deleteDonation(@PathVariable("id") Integer id) {
         donationsService.deleteDonation(id);
         return "redirect:/campaigns"; // hoặc quay lại trang chi tiết chiến dịch
+    }
+
+
+    @GetMapping("/my-donations")
+    public String myDonations(Model model) {
+
+        // Lấy username từ Spring Security
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Lấy userId
+        User user = userService.findByUsername(username);
+
+        // Lấy danh sách donate
+        List<Donations> history = donationsService.getDonationHistoryByUser(user.getUserId());
+
+        model.addAttribute("history", history);
+
+        return "donation-history"; // → templates/donation-history.html
     }
 
 }

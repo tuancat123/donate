@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử quyên góp</title>
+
+    <!-- Dùng giao diện chung -->
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+
+<div class="history-container">
+
+    <h1 class="history-title">Lịch sử quyên góp của bạn</h1>
+
+    <table class="history-table">
+        <thead>
+        <tr>
+            <th>Ngày</th>
+            <th>Chiến dịch</th>
+            <th>Số tiền</th>
+            <th>Trạng thái</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="d : ${history}">
+            <td th:text="${#temporals.format(d.donatedAt, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${d.campaign.title}"></td>
+            <td th:text="${#numbers.formatInteger(d.amount, 0, 'POINT')} + ' VND'"></td>
+            <td th:text="${d.campaign.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>

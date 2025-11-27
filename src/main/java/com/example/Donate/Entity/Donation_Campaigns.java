@@ -1,6 +1,8 @@
 package com.example.Donate.Entity;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -24,8 +26,9 @@ public class Donation_Campaigns {
 
     @Column(precision = 15, scale = 2)
     private BigDecimal currentAmount = BigDecimal.ZERO;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)

@@ -608,3 +608,45 @@ footer {
 .btn-primary:hover {
   background-color: #0056b3;
 }
+
+
+/* ========== Donation History Page ========== */
+
+.history-container {
+    padding: 50px 40px;
+}
+
+.history-title {
+    text-align: center;
+    color: #ff4d6d;
+    font-size: 30px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+.history-table thead {
+    background: #ff4d6d;
+    color: white;
+}
+
+.history-table th,
+.history-table td {
+    padding: 14px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.history-table tbody tr:hover {
+    background-color: #fff0f5;
+    transition: 0.2s ease;
+}

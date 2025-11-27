@@ -2,6 +2,7 @@ package com.example.Donate.Service;
 
 import com.example.Donate.Entity.Donation_Campaigns;
 import com.example.Donate.Repository.DonationCampaignRepository;
+import com.example.Donate.Repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,10 @@ public class DonationCampaignService {
 
     @Autowired
     private DonationCampaignRepository donationCampaignRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
-    public List<Donation_Campaigns> getALlCampaigns(){
+    public List<Donation_Campaigns> getAllCampaigns(){
         return donationCampaignRepository.findAll();
     }
 
@@ -25,8 +28,8 @@ public class DonationCampaignService {
         return donationCampaignRepository.findByOrganization_OrgId(orgId);
     }
 
-    public void saveCampaign(Donation_Campaigns campaign) {
-        donationCampaignRepository.save(campaign);
+    public Donation_Campaigns saveCampaign(Donation_Campaigns campaign) {
+        return donationCampaignRepository.save(campaign);
     }
 
     public Donation_Campaigns getCampaignById(Integer id){
@@ -35,7 +38,12 @@ public class DonationCampaignService {
     }
 
     public void deleteCampaign(Integer id){
-         donationCampaignRepository.deleteById(id);
+
+        // Xóa notification liên quan
+        notificationRepository.deleteByCampaign_CampaignId(id);
+
+        donationCampaignRepository.deleteById(id);
+
     }
 
     public void addDonation(Integer campaignId, BigDecimal amount) {
@@ -49,4 +57,15 @@ public class DonationCampaignService {
 
         donationCampaignRepository.save(campaign);
     }
+
+
+
+    public List<Donation_Campaigns> getCampaignsByStatus(Donation_Campaigns.Status status) {
+        return donationCampaignRepository.findByStatus(status);
+    }
+
+    public long getActiveCampaignCount() {
+        return donationCampaignRepository.countByStatus(Donation_Campaigns.Status.ACTIVE);
+    }
+
 }

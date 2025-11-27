@@ -6,6 +6,7 @@ import com.example.Donate.Repository.DonationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +22,13 @@ public class StatsService {
     private DonationCampaignRepository campaignRepository;
 
     /** Tổng số tiền quyên góp */
-    public long getTotalDonationAmount() {
-        Long sum = donationRepository.sumAllDonations();
-        return sum != null ? sum : 0;
+//    public long getTotalDonationAmount() {
+//        Long sum = donationRepository.sumAllDonations();
+//        return sum != null ? sum : 0;
+//    }
+    public BigDecimal getTotalDonationAmount() {
+        BigDecimal sum = donationRepository.sumAllDonations();
+        return sum != null ? sum : BigDecimal.ZERO;
     }
 
     /** Tổng lượt quyên góp */

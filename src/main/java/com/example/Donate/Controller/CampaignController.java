@@ -2,6 +2,7 @@ package com.example.Donate.Controller;
 
 import com.example.Donate.Entity.Donation_Campaigns;
 import com.example.Donate.Service.DonationCampaignService;
+import com.example.Donate.Service.NotificationService;
 import com.example.Donate.Service.OrganizationService;
 import com.example.Donate.Service.UserService;
 
@@ -19,20 +20,25 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/campaigns")
 public class CampaignController {
+
     @Autowired
     private DonationCampaignService donationCampaignService;
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private OrganizationService organizationService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @GetMapping
     public String viewAllCampaigns(Model model){
-        List<Donation_Campaigns> campaigns = donationCampaignService.getActiveCampaigns();
+        List<Donation_Campaigns> campaigns = donationCampaignService.getAllCampaigns();
         model.addAttribute("campaigns", campaigns);
         model.addAttribute("organizations", organizationService.getAllOrganizations());
-        return "campaigns"; // file HTML trong /templates/admin/
+        return "campaigns";
     }
 
     @GetMapping("/add")
@@ -48,7 +54,13 @@ public class CampaignController {
         campaign.setStartDate(LocalDate.now());
         campaign.setStatus(Donation_Campaigns.Status.ACTIVE);
         campaign.setCreatedBy(userService.getUserByEmail(authentication.getName()));
-        donationCampaignService.saveCampaign(campaign);
+        //donationCampaignService.saveCampaign(campaign);
+
+        Donation_Campaigns savedCampaign = donationCampaignService.saveCampaign(campaign);
+
+        // 🔔 Gửi thông báo cho toàn bộ user
+        notificationService.notifyAllUsers(savedCampaign);
+
         return "redirect:/admin/campaigns";
     }
 
@@ -61,7 +73,29 @@ public class CampaignController {
     }
 
     @PostMapping("/update")
-    public String updateCampaign(@ModelAttribute Donation_Campaigns campaign){
+    public String updateCampaign(@ModelAttribute Donation_Campaigns campaign) {
+        Donation_Campaigns existing = donationCampaignService.getCampaignById(campaign.getCampaignId());
+        if (existing == null) {
+            return "redirect:/admin/campaigns?error";
+        }
+
+        // Giữ lại các trường không sửa
+        campaign.setStartDate(existing.getStartDate());
+        campaign.setCreatedBy(existing.getCreatedBy());
+        campaign.setCurrentAmount(existing.getCurrentAmount());
+
+        // Kiểm tra trạng thái
+        boolean goalReached = campaign.getGoalAmount() != null &&
+                campaign.getCurrentAmount().compareTo(campaign.getGoalAmount()) >= 0;
+
+        boolean expired = campaign.getEndDate() != null && LocalDate.now().isAfter(campaign.getEndDate());
+
+        if (goalReached || expired) {
+            campaign.setStatus(Donation_Campaigns.Status.COMPLETED);
+        } else {
+            campaign.setStatus(Donation_Campaigns.Status.ACTIVE);
+        }
+
         donationCampaignService.saveCampaign(campaign);
         return "redirect:/admin/campaigns";
     }

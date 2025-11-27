@@ -27,23 +27,19 @@
 
     <!-- Ảnh -->
     <div class="campaign-detail-img">
-      <img th:src="@{'/images/campaigns/' + ${campaign.image}}"
-           alt="Ảnh chiến dịch">
+      <img th:src="@{'/images/campaigns/' + ${campaign.image}}" alt="Ảnh chiến dịch">
     </div>
 
     <!-- Nội dung -->
     <div class="campaign-detail-info">
       <h1 th:text="${campaign.title}">Tên chiến dịch</h1>
-      <p class="campaign-desc" th:text="${campaign.description}">
-        Mô tả chiến dịch...
-      </p>
+      <p class="campaign-desc" th:text="${campaign.description}">Mô tả chiến dịch...</p>
 
       <div class="progress-wrapper">
-        <progress th:value="${campaign.currentAmount}"
-                  th:max="${campaign.goalAmount}"></progress>
+        <progress th:value="${campaign.currentAmount}" th:max="${campaign.goalAmount}"></progress>
         <p>
-          <span th:text="${campaign.currentAmount}">0</span> /
-          <span th:text="${campaign.goalAmount}">0</span> VND
+          <span th:text="${#numbers.formatDecimal(campaign.currentAmount, 0, 'COMMA', 0, 'POINT')}">0</span> /
+          <span th:text="${#numbers.formatDecimal(campaign.goalAmount, 0, 'COMMA', 0, 'POINT')}">0</span> VND
         </p>
       </div>
 
@@ -52,14 +48,17 @@
       </p>
 
       <p><strong>Ngày bắt đầu:</strong>
-        <span th:text="${campaign.startDate}">01/01/2025</span>
+        <span th:text="${#temporals.format(campaign.startDate, 'dd/MM/yyyy')}"></span>
       </p>
       <p><strong>Ngày kết thúc:</strong>
-        <span th:text="${campaign.endDate}">31/12/2025</span>
+        <span th:text="${#temporals.format(campaign.endDate, 'dd/MM/yyyy')}"></span>
       </p>
 
       <div class="donate-btn-container">
-        <a th:href="@{'/donate'}" class="btn-hero">💝 Quyên góp ngay</a>
+        <a th:if="${campaign.status == T(com.example.Donate.Entity.Donation_Campaigns.Status).ACTIVE}"
+           th:href="@{'/donate/' + ${campaign.campaignId}}" class="btn-hero">💝 Quyên góp ngay</a>
+        <span th:if="${campaign.status != T(com.example.Donate.Entity.Donation_Campaigns.Status).ACTIVE}"
+              class="btn-hero disabled">💤 Chiến dịch đã kết thúc</span>
       </div>
     </div>
   </div>

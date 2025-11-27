@@ -21,7 +21,7 @@ public class Campaign_User_Controller {
     // Xem danh sách các chiến dịch đang hoạt động
     @GetMapping
     public String viewCampaignList(Model model) {
-        List<Donation_Campaigns> campaigns = donationCampaignService.getActiveCampaigns();
+        List<Donation_Campaigns> campaigns = donationCampaignService.getAllCampaigns();
         model.addAttribute("campaigns", campaigns);
         return "campaign_view"; // giao diện người dùng (trong templates/user/)
     }

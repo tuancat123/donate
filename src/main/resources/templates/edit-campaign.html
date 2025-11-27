@@ -9,13 +9,13 @@
 <header class="admin-header">
     <h1>✏️ Chỉnh sửa chiến dịch</h1>
     <nav>
-        <a th:href="@{/campaigns}">Danh sách chiến dịch</a>
+        <a th:href="@{/admin/campaigns}">Danh sách chiến dịch</a>
         <a th:href="@{/admin}">Trang quản trị</a>
     </nav>
 </header>
 
 <div class="admin-content">
-    <form th:action="@{/campaigns/update}" th:object="${campaign}" method="post" class="admin-form">
+    <form th:action="@{/admin/campaigns/update}" th:object="${campaign}" method="post" class="admin-form">
         <input type="hidden" th:field="*{campaignId}">
 
         <div class="form-group">
@@ -42,6 +42,11 @@
         <div class="form-group">
             <label for="goalAmount">Mục tiêu (VNĐ):</label>
             <input type="number" id="goalAmount" th:field="*{goalAmount}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="startDate">Ngày bắt đầu:</label>
+            <input type="date" id="startDate" th:field="*{startDate}" readonly>
         </div>
 
         <div class="form-group">
