@@ -19,6 +19,11 @@ public class NotificationService {
     @Autowired
     private UserRepository userRepository;
 
+    public List<Notification> getAllNotifications(User user) {
+        return notificationRepository.findByUserOrderByCreatedAtDesc(user);
+    }
+
+    // Lấy thông báo chưa đọc (dùng cho badge)
     public List<Notification> getUnreadNotifications(User user) {
         return notificationRepository.findByUserAndSeenFalse(user);
     }

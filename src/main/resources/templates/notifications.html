@@ -17,6 +17,10 @@
   <div class="nav-links">
     <a href="/">Trang chủ</a>
     <a href="/campaigns">Chiến dịch</a>
+    <a href="/donate">Quyên góp</a>
+    <a href="/organizations">Đối tác đồng hành</a>
+    <a href="/notifications">Thông báo</a>
+    <a href="/my-donations">Lịch sử quyên góp</a>
 
     <span class="user-info">
             Xin chào, <b th:text="${user.fullName}"></b> |
@@ -53,7 +57,7 @@
              th:text="${#dates.format(notif.createdAt, 'dd/MM/yyyy HH:mm')}">
       </small>
 
-      <form th:action="@{/notifications/seen/{id}(id=${notif.id})}" method="post" style="margin-top:10px;">
+      <form th:if="${!notif.seen}" th:action="@{/notifications/seen/{id}(id=${notif.id})}" method="post" style="margin-top:10px;">
         <button type="submit"
                 style="padding:6px 10px; background:#ff4d6d; color:white; border:none; border-radius:6px; cursor:pointer;">
           Đánh dấu đã đọc

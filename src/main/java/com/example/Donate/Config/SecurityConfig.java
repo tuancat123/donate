@@ -78,7 +78,7 @@ public class SecurityConfig {
                             if (role.contains("ADMIN")) {
                                 response.sendRedirect("/admin");
                             } else {
-                                response.sendRedirect("/home");
+                                response.sendRedirect("/");
                             }
                         })
                         .permitAll()

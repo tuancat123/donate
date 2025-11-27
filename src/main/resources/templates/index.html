@@ -19,10 +19,10 @@
         <a href="/">Trang chủ</a>
         <a href="/campaigns">Chiến dịch</a>
         <a href="/donate">Quyên góp</a>
-        <a href="/organizations">Đối tác</a>
+        <a href="/organizations">Đối tác đồng hành</a>
         <a href="/notifications">Thông báo</a>
         <a href="/my-donations">Lịch sử quyên góp</a>
-        <a href="/stats">Thống kê</a>
+<!--        <a href="/stats">Thống kê</a>-->
 
         <!-- Chưa đăng nhập -->
         <a href="/login" sec:authorize="!isAuthenticated()">Đăng nhập</a>
@@ -36,7 +36,7 @@
     <a href="/notifications" class="notif-icon" style="position: relative; margin: 0 10px;">
         🔔
         <!-- Badge số thông báo -->
-        <span th:if="${globalUnread > 0}"
+         <span th:if="${globalUnread != null and globalUnread > 0}"
               th:text="${globalUnread}"
               style="
                 position:absolute;
@@ -92,9 +92,60 @@
         <div class="campaign-card" th:each="c : ${campaigns}">
             <h3 th:text="${c.title}">Tên chiến dịch</h3>
             <p th:text="${c.description}">Mô tả ngắn về chiến dịch...</p>
-            <progress th:value="${c.raised}" th:max="${c.goal}"></progress>
-            <p><span th:text="${c.raised}">0</span> /
-                <span th:text="${c.goal}">0</span> VND</p>
+            <progress th:value="${c.currentAmount}" th:max="${c.goalAmount}"></progress>
+            <p><span th:text="${c.currentAmount}">0</span> /
+                <span th:text="${c.goalAmount}">0</span> VND</p>
+        </div>
+    </div>
+</section>
+<!-- 🌷 About Us -->
+<section class="about-section">
+    <h2>Về Quỹ Từ Thiện</h2>
+
+    <div class="about-content">
+        <div class="about-text">
+            <p>
+                Quỹ Từ Thiện được xây dựng với mong muốn trở thành một cầu nối tin cậy giữa cộng đồng
+                và những hoàn cảnh khó khăn trên khắp Việt Nam. Chúng tôi hướng đến việc tạo ra
+                một hệ thống quyên góp trực tuyến minh bạch, tiện lợi và an toàn, giúp mỗi tấm lòng
+                nhân ái đều được lan tỏa đúng nơi, đúng thời điểm.
+            </p>
+
+            <p>
+                Trong nhiều năm qua, các chiến dịch quyên góp truyền thống còn gặp khó khăn
+                ở vấn đề minh bạch, thiếu công cụ theo dõi, và khó tiếp cận đến số đông người ủng hộ.
+                Dựa trên nền tảng công nghệ, hệ thống của chúng tôi giúp mọi giao dịch, tiến độ,
+                và tình hình trao tặng đều được cập nhật liên tục và công khai.
+            </p>
+
+            <h3>Sứ mệnh của chúng tôi</h3>
+            <p>
+                Mang đến một nền tảng từ thiện an toàn, hiện đại và minh bạch,
+                nơi mà mọi cá nhân đều có thể chung tay giúp đỡ xã hội chỉ với vài thao tác.
+            </p>
+
+            <h3>Tầm nhìn</h3>
+            <p>
+                Trở thành nền tảng quyên góp cộng đồng uy tín hàng đầu Việt Nam,
+                hỗ trợ hàng triệu người tiếp cận với sự giúp đỡ kịp thời mỗi năm.
+            </p>
+
+
+            <h3>Các hoạt động tiêu biểu</h3>
+            <p>Quỹ Từ Thiện hỗ trợ nhiều lĩnh vực như:</p>
+            <ul>
+                <li>• Hỗ trợ y tế cho bệnh nhân khó khăn</li>
+                <li>• Xây dựng nhà tình thương, cầu đường nông thôn</li>
+                <li>• Hỗ trợ thiên tai, bão lũ, hạn hán</li>
+                <li>• Chương trình “Vì trẻ em vùng cao”</li>
+                <li>• Học bổng và hỗ trợ giáo dục</li>
+            </ul>
+
+            <p>
+                Chúng tôi tin rằng khi cộng đồng cùng chung tay,
+                mọi khó khăn đều có thể được san sẻ và mọi cuộc đời đều có hy vọng để bước tiếp.
+            </p>
+
         </div>
     </div>
 </section>

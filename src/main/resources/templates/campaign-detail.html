@@ -56,7 +56,7 @@
 
       <div class="donate-btn-container">
         <a th:if="${campaign.status == T(com.example.Donate.Entity.Donation_Campaigns.Status).ACTIVE}"
-           th:href="@{'/donate/' + ${campaign.campaignId}}" class="btn-hero">💝 Quyên góp ngay</a>
+           th:href="@{/donate(campaignId=${campaign.campaignId})}" class="btn-hero">💝 Quyên góp ngay</a>
         <span th:if="${campaign.status != T(com.example.Donate.Entity.Donation_Campaigns.Status).ACTIVE}"
               class="btn-hero disabled">💤 Chiến dịch đã kết thúc</span>
       </div>

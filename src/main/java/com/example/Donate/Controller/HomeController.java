@@ -28,10 +28,12 @@ public class HomeController {
     public String home(Model model) {
         // Tổng số tiền quyên góp
         BigDecimal totalDonation = donationsService.getTotalDonationAmount2();
+        if (totalDonation == null) {
+            totalDonation = BigDecimal.ZERO;
+        }
         String totalDonationStr = NumberFormat
                 .getInstance(new Locale("vi", "VN"))
-                .format(totalDonation.longValue())   // ⬅️ QUAN TRỌNG
-                + " VND";
+                .format(totalDonation.longValue()) + " VND";
 
         // Tổng chiến dịch ACTIVE
         long totalCampaigns = campaignService.getActiveCampaignCount();
@@ -41,6 +43,7 @@ public class HomeController {
 
         // Danh sách campaign nổi bật
         List<Donation_Campaigns> campaigns = campaignService.getActiveCampaigns();
+        if (campaigns == null) campaigns = List.of();  // tránh null
 
         model.addAttribute("totalDonation", totalDonationStr);
         model.addAttribute("totalCampaigns", totalCampaigns);
@@ -50,4 +53,6 @@ public class HomeController {
 
         return "index";
     }
+
+
 }

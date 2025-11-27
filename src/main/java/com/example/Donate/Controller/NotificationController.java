@@ -26,12 +26,14 @@ public class NotificationController {
     @GetMapping("/notifications")
     public String notifications(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
-        List<Notification> notifs = notificationService.getUnreadNotifications(user);
+        List<Notification> notifs = notificationService.getAllNotifications(user);
 
         model.addAttribute("user", user);
         model.addAttribute("notifications", notifs);
         return "notifications";
     }
+
+
 
 
     @PostMapping("/notifications/seen/{id}")

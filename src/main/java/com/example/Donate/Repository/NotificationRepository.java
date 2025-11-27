@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
     List<Notification> findByUserAndSeenFalse(User user);
+    List<Notification> findByUserOrderByCreatedAtDesc(User user);
     @Transactional
     void deleteByCampaign_CampaignId(Integer campaignId);
 }
